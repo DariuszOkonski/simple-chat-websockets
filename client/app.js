@@ -11,7 +11,7 @@ const login = (e) => {
   e.preventDefault();
 
   if (!userNameInput.value) {
-    return alert("Field can't be empty");
+    return alert("Login field can't be empty");
   }
 
   userName = userNameInput.value;
@@ -20,4 +20,21 @@ const login = (e) => {
   messagesSection.classList.add('show');
 };
 
-loginForm.addEventListener('submit', (e) => login(e));
+const sendMessage = (e) => {
+  e.preventDefault();
+
+  if (!messageContentInput.value) {
+    return alert("Message field can't be empty");
+  }
+
+  addMessage(userName, messageContentInput.value);
+  messageContentInput.value = '';
+};
+
+const addMessage = (userName, message) => {
+  console.log('userName: ', userName);
+  console.log('add message: ', message);
+};
+
+loginForm.addEventListener('submit', login);
+addMessageForm.addEventListener('submit', sendMessage);
