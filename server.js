@@ -1,9 +1,15 @@
 const express = require('express');
+const path = require('path');
 
 const app = express();
 
+// Serve static files from the 'client' directory
+app.use(express.static(path.join(__dirname, 'client')));
+
+let messages = [];
+
 app.get('/', (req, res) => {
-  return res.send('GET /');
+  res.sendFile(path.join(__dirname, 'client', 'index.html'));
 });
 
 const PORT = 8000;
