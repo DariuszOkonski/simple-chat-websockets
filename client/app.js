@@ -32,9 +32,6 @@ const sendMessage = (e) => {
 };
 
 const addMessage = (userName, message) => {
-  console.log('userName: ', userName);
-  console.log('add message: ', message);
-
   createMessage(userName, message);
 };
 
