@@ -8,6 +8,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'client')));
 
 let messages = [];
+let users = [];
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'index.html'));
@@ -23,6 +24,12 @@ const io = socket(server);
 io.on('connection', (socket) => {
   console.log('New client! Its id - ' + socket.id);
 
+  socket.on('login', (incomingClient) => {
+    const client = { id: socket.id, name: incomingClient.author };
+
+    users.push(client);
+  });
+
   socket.on('message', (message) => {
     console.log("Oh, I've got something from " + socket.id);
     messages.push(message);
@@ -31,6 +38,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('Oh, socket ' + socket.id + ' has left');
+    users = users.filter((user) => user.id !== socket.id);
   });
 
   console.log("I've added a listener on message event \n");
