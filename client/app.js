@@ -4,8 +4,12 @@ const messageList = document.querySelector('#messages-list');
 const addMessageForm = document.querySelector('#add-messages-form');
 const userNameInput = document.querySelector('#username');
 const messageContentInput = document.querySelector('#message-content');
+const socket = io();
 
 let userName;
+
+socket.on('message', ({ author, content }) => addMessage(author, content));
+// socket.emit('message', { author: 'John Doe', content: 'lorem Ipsum...' });
 
 const login = (e) => {
   e.preventDefault();
@@ -23,11 +27,14 @@ const login = (e) => {
 const sendMessage = (e) => {
   e.preventDefault();
 
-  if (!messageContentInput.value) {
+  const messageContent = messageContentInput.value;
+
+  if (!messageContent) {
     return alert("Message field can't be empty");
   }
 
-  addMessage(userName, messageContentInput.value);
+  addMessage(userName, messageContent);
+  socket.emit('message', { author: userName, content: messageContent });
   messageContentInput.value = '';
 };
 
