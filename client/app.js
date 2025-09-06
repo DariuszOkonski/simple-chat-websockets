@@ -9,7 +9,6 @@ const socket = io();
 let userName;
 
 socket.on('message', ({ author, content }) => addMessage(author, content));
-// socket.emit('message', { author: 'John Doe', content: 'lorem Ipsum...' });
 
 const login = (e) => {
   e.preventDefault();

@@ -22,8 +22,6 @@ const server = app.listen(PORT, () => {
 const io = socket(server);
 
 io.on('connection', (socket) => {
-  console.log('New client! Its id - ' + socket.id);
-
   socket.on('join', (incomingClient) => {
     const client = { id: socket.id, name: incomingClient.author };
 
@@ -38,15 +36,19 @@ io.on('connection', (socket) => {
   });
 
   socket.on('message', (message) => {
-    console.log("Oh, I've got something from " + socket.id);
     messages.push(message);
     socket.broadcast.emit('message', message);
   });
 
   socket.on('disconnect', () => {
-    console.log('Oh, socket ' + socket.id + ' has left');
+    const clientName = users.find((user) => user.id === socket.id).name;
+
+    const message = {
+      author: 'Chat Bot',
+      content: `${clientName} has left the conversation...`,
+    };
+
+    socket.broadcast.emit('message', message);
     users = users.filter((user) => user.id !== socket.id);
   });
-
-  console.log("I've added a listener on message event \n");
 });
