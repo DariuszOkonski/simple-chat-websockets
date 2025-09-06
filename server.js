@@ -21,5 +21,12 @@ const server = app.listen(PORT, () => {
 const io = socket(server);
 
 io.on('connection', (socket) => {
-  socket.on('message', () => console.log('got your message'));
+  console.log('New client! Its id - ' + socket.id);
+  socket.on('message', () => {
+    console.log("Oh, I've got something from " + socket.id);
+  });
+  socket.on('disconnect', () => {
+    console.log('Oh, socket ' + socket.id + ' has left');
+  });
+  console.log("I've added a listener on message event \n");
 });
