@@ -28,6 +28,13 @@ io.on('connection', (socket) => {
     const client = { id: socket.id, name: incomingClient.author };
 
     users.push(client);
+
+    const message = {
+      author: 'Chat Bot',
+      content: `${client.name} has joined the conversation!`,
+    };
+
+    socket.broadcast.emit('message', message);
   });
 
   socket.on('message', (message) => {
